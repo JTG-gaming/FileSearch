@@ -17,18 +17,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: "8.0.x"
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore FileSearch.csproj
 
       - name: Publish
-        run: dotnet publish -c Release -o publish
+        run: dotnet publish FileSearch.csproj -c Release -o publish
 
       - name: Create ZIP
         shell: pwsh
@@ -37,7 +37,7 @@ jobs:
           Compress-Archive -Path publish\* -DestinationPath "FileSearch-$version.zip"
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ inputs.version }}
           name: FileSearch ${{ inputs.version }}
